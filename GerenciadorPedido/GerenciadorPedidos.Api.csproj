@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>95db5677-12ba-4e6f-95ec-b52cc089babc</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\WeatherForecastController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GerenciadorPedido.Domain\GerenciadorPedidos.Domain.csproj" />
+    <ProjectReference Include="..\GerenciadorPedido.Infra\GerenciadorPedidos.Infra.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="iHUB.Domain">
+      <HintPath>..\..\..\ESPP\ARQUITETURA\iHUB.Domain\src\iHUB.Domain\bin\Debug\netstandard1.1\iHUB.Domain.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

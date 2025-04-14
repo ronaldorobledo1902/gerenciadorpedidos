@@ -1,0 +1,21 @@
+services:
+  gerenciadorpedidos.api:
+    image: ${DOCKER_REGISTRY-}gerenciadorpedidosapi
+    build:
+      context: .
+      dockerfile: GerenciadorPedido/Dockerfile
+    depends_on:
+      - sqlserver
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    hostname: 'sqlserver'
+    environment:
+      ACCEPT_EULA: 'Y'
+      SA_PASSWORD: "Teste#2024"
+      MSSQL_PID: "Express"
+    volumes:
+      - /mnt/c/dados/volumes/mssql:/var/opt/mssql
+    ports:
+      - '11433:1433'    
+    expose:
+      - 1433
