@@ -25,7 +25,14 @@ namespace GerenciadorPedidos.Api.Controllers
         [ProducesResponseType(typeof(PedidoInserirCommandResult), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(PedidoInserirCommandResult), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<PedidoInserirCommandResult>> PedidoInserir([FromServices] PedidoInserirHandler handler,
-          [FromBody] PedidoInserirCommand command) => await SendCommand(handler, command);
+          [FromBody] PedidoInserirCommand command)
+        {
+            command.Oid = Guid.NewGuid().ToString();
+            command.Sid = Guid.NewGuid().ToString();
+            command.Id = Guid.NewGuid().ToString();
+            return await SendCommand(handler, command);
+        }
+            
 
 
         [HttpGet("obter")]
@@ -34,7 +41,14 @@ namespace GerenciadorPedidos.Api.Controllers
         [ProducesResponseType(typeof(PedidoObterQueryResult), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(PedidoObterQueryResult), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<PedidoObterQueryResult>> PedidoObter([FromServices] PedidoObterQueryHandler handler,
-          [FromQuery] PedidoObterQuery command) => await SendQuery(handler, command);
+          [FromQuery] PedidoObterQuery command)
+        {
+            command.Oid = Guid.NewGuid().ToString();
+            command.Sid = Guid.NewGuid().ToString();
+            command.Id = Guid.NewGuid().ToString();
+            return await SendQuery(handler, command);
+        }
+        
 
 
         [HttpGet("obter/status")]
@@ -43,7 +57,25 @@ namespace GerenciadorPedidos.Api.Controllers
         [ProducesResponseType(typeof(PedidoObterStatusQueryResult), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(PedidoObterStatusQueryResult), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<PedidoObterStatusQueryResult>> PedidoObterStatus([FromServices] PedidoObterStatusQueryHandler handler,
-          [FromQuery] PedidoObterStatusQuery command) => await SendQuery(handler, command);
+          [FromQuery] PedidoObterStatusQuery command)
+        {
+            command.Oid = Guid.NewGuid().ToString();
+            command.Sid = Guid.NewGuid().ToString();
+            command.Id = Guid.NewGuid().ToString();
+            return await SendQuery(handler, command);
+        }
+            
+
+
+        [HttpPost("simuladorurlexterna")]
+        [ProducesResponseType(typeof(PedidoInserirCommandResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PedidoInserirCommandResult), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(PedidoInserirCommandResult), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(PedidoInserirCommandResult), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<PedidoInserirCommandResult>> SimuladorUrlExterna([FromBody] PedidoInserirCommand command)
+        {
+            return new PedidoInserirCommandResult();                    
+        } 
 
     }
 }

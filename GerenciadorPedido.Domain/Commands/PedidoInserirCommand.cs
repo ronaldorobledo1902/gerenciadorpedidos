@@ -2,17 +2,20 @@
 using GerenciadorPedidos.Domain.Model;
 using iHUB.Domain.Cqrs;
 using iHUB.Domain.Dtos;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Annotations;
+using System.ComponentModel;
+using System.Text.Json.Serialization;
 
 namespace GerenciadorPedidos.Domain.Commands
 {
     public class PedidoInserirCommand : ICommand
     {
-
         
         public string Oid { get; set; }
         
         public string Id { get; set; }
+        
         public string Sid { get; set; }
         public Pedido Pedido { get; set; }
     }

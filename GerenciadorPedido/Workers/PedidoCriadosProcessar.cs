@@ -16,12 +16,14 @@ namespace GerenciadorPedidos.Api.Workers
         private DateTime _nextRun = DateTime.UtcNow;
         private bool _estaProcessando = false;
         private IPedidoService _pedidoService;
-        private ISistemaExternoHttp _sistemaExternoHttp;
+        private readonly ISistemaExternoHttp _sistemaExternoHttp;
         
-        public PedidoCriadosProcessar(ILogger<PedidoCriadosProcessar> logger, IServiceProvider serviceProvider)
+        public PedidoCriadosProcessar(ILogger<PedidoCriadosProcessar> logger, IServiceProvider serviceProvider,
+            ISistemaExternoHttp sistemaExternoHttp)
         {
             _logger = logger;
             _serviceProvider = serviceProvider;
+            _sistemaExternoHttp = sistemaExternoHttp;
 
             AppDomain.CurrentDomain.ProcessExit += OnProcessExit;
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
@@ -90,7 +92,6 @@ namespace GerenciadorPedidos.Api.Workers
                 {
                     _pedidoRepositorio = scope.ServiceProvider.GetRequiredService<IPedidoRepositorio>();
                     _pedidoService = scope.ServiceProvider.GetRequiredService<IPedidoService>();
-                    //_sistemaExternoHttp = scope.ServiceProvider.GetRequiredService<ISistemaExternoHttp>();
                     await PedidosCriadosProcessar(stoppingToken);
                 }
 
@@ -131,20 +132,21 @@ namespace GerenciadorPedidos.Api.Workers
 
                         var pedidocommand = new PedidoInserirCommand()
                         {
+                            Oid = Guid.NewGuid().ToString(),
+                            Sid = Guid.NewGuid().ToString(),
                             Id = Guid.NewGuid().ToString(),
                             Pedido = pedido,
                         };
 
                         await _sistemaExternoHttp.PedidoEnviar(pedidocommand);
 
-                        _logger.LogInformation($"PEDIDO_CRIADOS_PROCESSAR|[{DateTime.Now}] - Pedido {pedido.Id} processado com sucesso .");
                     }
                     catch (Exception ex)
                     {
                         _logger.LogError($"PEDIDO_CRIADOS_PROCESSAR_ERROR|Inconsistência no processamento do pedido {pedido.Id} - Messagem: {ex.Message}");
                     }
 
-                    _logger.LogInformation($"PEDIDO_CRIADOS_PROCESSAR|Pedido processao com sucesso : {pedido.Id}");
+                    _logger.LogInformation($"PEDIDO_CRIADOS_PROCESSAR|[{DateTime.Now}] - Pedido {pedido.Id} processado com sucesso .");
                 });
             }
             catch (Exception ex)

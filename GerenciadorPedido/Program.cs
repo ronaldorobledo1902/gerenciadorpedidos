@@ -1,6 +1,7 @@
 using GerenciadorPedidos.Api.Configuracao;
 using GerenciadorPedidos.Api.Workers;
 using GerenciadorPedidos.Infra.Contexto;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Serilog;
 
@@ -19,6 +20,7 @@ builder.Services.AddCqrsConfiguration();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+    c.EnableAnnotations(); 
 });
 
 builder.Services.AddHostedService<PedidoCriadosProcessar>();
