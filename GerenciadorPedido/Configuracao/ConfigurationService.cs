@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using GerenciadorPedidos.Api.ClientServices;
+using GerenciadorPedidos.Api.ClientServices.Http;
 using iHUB.Domain.Cqrs.Handlers;
 using Serilog;
 using System.Reflection;
@@ -28,7 +29,7 @@ namespace GerenciadorPedidos.Api.Configuracao
             if (string.IsNullOrEmpty(configuration.GetValue<string>("SistemaExternoBase").ToString()))
                 throw new ArgumentNullException("SistemaExternoBase");
             
-            services.AddHttpClient<ISistemaExternoHttp, ISistemaExternoHttp>(c => {
+            services.AddHttpClient<ISistemaExternoHttp, SistemaExternoHttp>(c => {
                 c.BaseAddress = new Uri(configuration.GetValue<string>("SistemaExternoBase").ToString());
             });
             
